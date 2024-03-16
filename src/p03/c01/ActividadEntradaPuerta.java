@@ -14,6 +14,8 @@ package src.p03.c01;
  * 
  */
 
+//Importaciones
+
 import java.util.Random;
 
 import java.util.concurrent.TimeUnit;
@@ -22,53 +24,55 @@ import java.util.logging.Level;
 
 import java.util.logging.Logger;
 
-public class ActividadEntradaPuerta implements Runnable{
+public class ActividadEntradaPuerta implements Runnable {
 
-		private static final int NUMENTRADAS = 20; // Requisito de entradas definido en el documento de la práctica
+	// Declaración de variables
 
-		private String puerta; //Identifica a la puerta
+	private static final int NUMENTRADAS = 20; // Requisito de entradas definido en el documento de la práctica
 
-		private IParque parque; //Identifica al parque
+	private String puerta; // Identifica a la puerta
 
-		/**
-		 * Constructor de la clase
-		 * 
-		 * @param puerta
-		 * 
-		 * @param parque
-		 */
-		public ActividadEntradaPuerta(String puerta, IParque parque) {
+	private IParque parque; // Identifica al parque
 
-			this.puerta = puerta;
+	/**
+	 * Constructor de la clase
+	 * 
+	 * @param puerta
+	 * 
+	 * @param parque
+	 */
+	public ActividadEntradaPuerta(String puerta, IParque parque) {
 
-			this.parque = parque;
+		this.puerta = puerta;
 
-		}
+		this.parque = parque;
 
-		@Override
+	}// fin constructor
 
-		public void run() {
+	@Override
 
-			for (int i = 0; i < NUMENTRADAS; i ++) {
+	public void run() {
 
-				try {
+		for (int i = 0; i < NUMENTRADAS; i++) {
 
-					parque.entrarAlParque(puerta);
+			try {
 
-					TimeUnit.MILLISECONDS.sleep(new Random().nextInt(5)*1000);
+				parque.entrarAlParque(puerta);
 
-				} catch (InterruptedException e) {
+				TimeUnit.MILLISECONDS.sleep(new Random().nextInt(5) * 1000);
 
-					Logger.getGlobal().log(Level.INFO, "Entrada interrumpida");
+			} catch (InterruptedException e) {
 
-					Logger.getGlobal().log(Level.INFO, e.toString());
+				Logger.getGlobal().log(Level.INFO, "Entrada interrumpida");
 
-					return;
+				Logger.getGlobal().log(Level.INFO, e.toString());
 
-				}
+				return;
 
-			}
+			} // fin try - catch
 
-		}
+		} // fin for
 
-}
+	} // fin run
+
+}// fin clase
