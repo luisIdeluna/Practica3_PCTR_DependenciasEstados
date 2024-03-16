@@ -101,4 +101,11 @@ public class Parque implements IParque{
 	}
 
 
+	@Override
+	public void salirDelParque(String puerta) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'salirDelParque'");
+	}
+
+
 }

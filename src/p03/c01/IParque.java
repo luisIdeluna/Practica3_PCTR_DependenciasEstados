@@ -13,9 +13,26 @@ package src.p03.c01;
  */
 
 public interface IParque {
-	
+
+
+	/**
+	 * Método: entrarAlParque(String puerta)
+	 * 
+	 * Descripción: Incrementar las personas que entran el Parque en una
+	 * 
+	 * @param puerta 
+	 * 
+	 */
 	public abstract void entrarAlParque(String puerta);
 
-	// TODO
+	/**
+	 * Método: salirDelParque(String puerta
+	 * )
+	 * Descripción: Disminuir las personas que salen del parque en una
+	 * 
+	 * @param puerta 
+	 * 
+	 */
+	public abstract void salirDelParque(String puerta);
 
 }
