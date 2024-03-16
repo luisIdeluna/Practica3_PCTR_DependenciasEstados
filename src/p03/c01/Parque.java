@@ -15,11 +15,13 @@ package src.p03.c01;
  */
 
 import java.util.Enumeration;
+
 import java.util.Hashtable;
 
 public class Parque implements IParque{
 
 	/*Requisito de capacidad del parque */
+
 	private static final int MAXPERSONAS =50;
 
 	private int contadorPersonasTotales; // Total de persona dentro del parque
@@ -37,8 +39,11 @@ public class Parque implements IParque{
 
 	}
 
-
 	@Override
+
+	/**
+	 * @param puerta
+	 */
 	public void entrarAlParque(String puerta){		// TODO
 		
 		// Si no hay entradas por esa puerta, inicializamos
@@ -60,22 +65,20 @@ public class Parque implements IParque{
 		
 		imprimirInfo(puerta, "Entrada");
 		
-		// TODO
-		
-		
-		// TODO
+		checkInvariante(); //comprobamos que se cumple esto
 		
 	}
 	
 	/**
 	 * 
 	 * @param puerta
+	 * 
 	 * @param movimiento
 	 */
 	private void imprimirInfo (String puerta, String movimiento){
 
-
 		System.out.println(movimiento + " por puerta " + puerta);
+
 		System.out.println("--> Personas en el parque " + contadorPersonasTotales); //+ " tiempo medio de estancia: "  + tmedio);
 		
 		// Iteramos por todas las puertas e imprimimos sus entradas
@@ -91,7 +94,7 @@ public class Parque implements IParque{
 	}
 	/**
 	 * 
-	 * @return
+	 * @return sumaContadoresPuerta
 	 */
 	private int sumarContadoresPuerta() {
 
@@ -103,32 +106,52 @@ public class Parque implements IParque{
 
 			sumaContadoresPuerta += iterPuertas.nextElement();
 
-		}
+		}//fin while
 
 		return sumaContadoresPuerta;
 
-	}
+	}//fin sumarContadoresPuerta
 	
 	protected void checkInvariante() {
 
 		assert sumarContadoresPuerta() == contadorPersonasTotales : "INV: La suma de contadores de las puertas debe ser igual al valor del contador del parte";
 
-		// TODO 
+		//Verifico el aforo máximo del parque
 
-		// TODO
+		assert contadorPersonasTotales <= MAXPERSONAS : "Áforo máximo del parque alcanzado"; 
+
+		//Verifico que no se ha colado nadie en el parque
+
+		assert contadorPersonasTotales > 0: "Se ha colado gente";
 		
-				
-	}
+	}//checkinVariante
+
+	private int sumarPersonasPuerta(){
+
+		int personasPuerta = 0;
+		
+		Enumeration<Integer> nPuertas = contadoresPersonasPuerta.elements();
+
+		//Creo el iterador
+		while (nPuertas.hasMoreElements()){
+
+			personasPuerta += nPuertas.nextElement();
+
+		}//fin while
+
+		return personasPuerta; 
+
+	}//fin sumarPersonasPuerta
 
 	/**
 	 * Método compobarAntesDeEntrar
 	 * 
 	 * Se debe de comprobar que se permite el acceso de personas al parque por no llegar al áforo máximo
-	 * @throws InterruptedException 
+	 *
+	 *  @throws InterruptedException 
 	 */
 	protected void comprobarAntesDeEntrar() {
 
-		
 		while (contadorPersonasTotales >= MAXPERSONAS){
 
 			try{
@@ -167,14 +190,28 @@ public class Parque implements IParque{
 		}//fin while
 	}
 
-
 	@Override
 	/**
-	 * param puerta
+	 * @param puerta
+	 * 
 	 */
 	public void salirDelParque(String puerta) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'salirDelParque'");
+
+		// Si no hay entradas por esa puerta, inicializamos
+		if (contadoresPersonasPuerta.get(puerta) == null){
+		
+			contadoresPersonasPuerta.put(puerta, 0);
+		
+		}
+
+		contadorPersonasTotales--; //Reduzco en una unidad el contador de personas que hay en el parque
+	
+		contadoresPersonasPuerta.put(puerta, null);
+
+		imprimirInfo(puerta, puerta);
+
+		checkInvariante(); // hay que verificar que se cumple el invariante
+
 	}
 
 }//fin clase
