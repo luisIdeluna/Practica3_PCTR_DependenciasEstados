@@ -10,6 +10,8 @@ package src.p03.c01;
  * 
  * @version 1.0
  * 
+ * @Descripction: Práctica 3 Programación concurrente Curso 2023/2024
+ * 
  */
 
 public interface IParque {
