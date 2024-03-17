@@ -43,8 +43,12 @@ public class Parque implements IParque{
 
 	/**
 	 * @param puerta
+	 * 
+	 * @precondición: Número total de personas en el parque debe ser menor que MAXPERSONAS
+	 * 
+	 * @postcondición: Núermo total de personas en el parque se debe de incrementar en uno y el contador de la puerta también
 	 */
-	public void entrarAlParque(String puerta){		// TODO
+	public synchronized void entrarAlParque(String puerta){		// TODO
 		
 		// Si no hay entradas por esa puerta, inicializamos
 		if (contadoresPersonasPuerta.get(puerta) == null){
@@ -54,7 +58,7 @@ public class Parque implements IParque{
 		}
 		
 		// Hay que comprobar antes que entrar
-				
+		comprobarAntesDeEntrar(); //Espera si el parque esta lleno
 		
 		// Aumentamos el contador total y el individual
 		contadorPersonasTotales++;		
@@ -66,6 +70,8 @@ public class Parque implements IParque{
 		imprimirInfo(puerta, "Entrada");
 		
 		checkInvariante(); //comprobamos que se cumple esto
+
+		notifyAll(); // Notifico a los hilos que esperan para salir
 		
 	}
 	
@@ -156,7 +162,7 @@ public class Parque implements IParque{
 
 			try{
 
-				wait(); 
+				wait(); //Espera hasta que se notifiquen cambios
 
 			}//fin try
 
@@ -177,7 +183,7 @@ public class Parque implements IParque{
 
 			try{
 
-				wait(); 
+				wait(); //Espera hasta que se notifiquen cambios
 
 			}//fin try
 
@@ -193,9 +199,12 @@ public class Parque implements IParque{
 	@Override
 	/**
 	 * @param puerta
+	 *
+	 * @precondición: El número de personas en el parque debe ser menor que MAXPERSONAS 
 	 * 
+	 * @postcondición: El número total de personas el parque se decrementa en una unidad y el contador de la puerta igual
 	 */
-	public void salirDelParque(String puerta) {
+	public synchronized void salirDelParque(String puerta) {
 
 		// Si no hay entradas por esa puerta, inicializamos
 		if (contadoresPersonasPuerta.get(puerta) == null){
@@ -204,11 +213,13 @@ public class Parque implements IParque{
 		
 		}
 
+		comprobarAntesDeSalir(); //Espera si el parque está vacío
+
 		contadorPersonasTotales--; //Reduzco en una unidad el contador de personas que hay en el parque
 	
-		contadoresPersonasPuerta.put(puerta, null);
+		contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta)-1);
 
-		imprimirInfo(puerta, puerta);
+		imprimirInfo(puerta, puerta);//Imprimo la información 
 
 		checkInvariante(); // hay que verificar que se cumple el invariante
 
