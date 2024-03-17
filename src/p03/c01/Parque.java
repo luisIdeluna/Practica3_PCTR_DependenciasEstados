@@ -59,6 +59,13 @@ public class Parque implements IParque{
 			contadoresPersonasPuerta.put(puerta, 0);
 		
 		}
+
+		 // Reiniciar el tiempo inicial si el parque estaba vacío
+		 if (contadorPersonasTotales == 0){
+
+			tiempoInicial = System.currentTimeMillis();
+		
+		}
 		
 		// Hay que comprobar antes que entrar
 		comprobarAntesDeEntrar(); //Espera si el parque esta lleno
@@ -234,16 +241,20 @@ public class Parque implements IParque{
 	 /**
 	  * 
 	  */
-	  private synchronized double obtenerMediaTiempo(){
+	  private synchronized String obtenerMediaTiempo(){
 
 		long tiempoActual = System.currentTimeMillis();
 
-		if(contadorPersonasTotales == 0) return 0.0;
+		if(contadorPersonasTotales == 0) return "0.0 minutos" ;
 		
+		long timempoTotalEstancia = tiempoActual - tiempoInicial;
+
 		// Convierto los milisegundos a minutos para mejorar la legibilidad.
 
-		return ((tiempoActual - tiempoInicial) / 1000.0) / 60.0 / contadorPersonasTotales;
+		double tiempoEnMinutos = (timempoTotalEstancia  / 60.0) / contadorPersonasTotales;
 
-	  }
+		return String.format("%.2f minutos", tiempoEnMinutos);
+
+	  }//fin obtenerMediaTiempo
 
 }//fin clase
