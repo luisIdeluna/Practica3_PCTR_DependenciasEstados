@@ -257,4 +257,7 @@ public class Parque implements IParque{
 
 	  }//fin obtenerMediaTiempo
 
+
+	  
+
 }//fin clase
