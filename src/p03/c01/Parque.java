@@ -219,7 +219,7 @@ public class Parque implements IParque{
 	
 		contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta)-1);
 
-		imprimirInfo(puerta, puerta);//Imprimo la información 
+		imprimirInfo(puerta, "Salida"); //Imprimo la salida  
 
 		checkInvariante(); // hay que verificar que se cumple el invariante
 
