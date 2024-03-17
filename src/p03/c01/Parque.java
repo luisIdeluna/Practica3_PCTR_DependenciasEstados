@@ -168,7 +168,11 @@ public class Parque implements IParque{
 
 			catch( InterruptedException e){
 
-				e.printStackTrace();
+				//e.printStackTrace();
+				
+				Thread.currentThread().interrupt();
+                
+				return;
 
 			}//fin catch
 
@@ -177,9 +181,9 @@ public class Parque implements IParque{
 	}//fin comprobarAntesDeEntrar
 
 	//Comporbamos si existe gente dentro del parque antes de salir
-	protected void comprobarAntesDeSalir(){
+	protected void comprobarAntesDeSalir(String puerta){
 		
-		while (contadorPersonasTotales <=0){
+		while (contadorPersonasTotales <=0 || contadoresPersonasPuerta.getOrDefault(puerta, 0) <= 0) {
 
 			try{
 
@@ -189,7 +193,11 @@ public class Parque implements IParque{
 
 			catch( InterruptedException e){
 
-				e.printStackTrace();
+				//e.printStackTrace();
+
+				Thread.currentThread().interrupt();
+
+                return;
 
 			}//fin catch
 
@@ -213,7 +221,7 @@ public class Parque implements IParque{
 		
 		}
 
-		comprobarAntesDeSalir(); //Espera si el parque está vacío
+		comprobarAntesDeSalir(puerta); //Espera si el parque está vacío
 
 		contadorPersonasTotales--; //Reduzco en una unidad el contador de personas que hay en el parque
 	
