@@ -94,7 +94,7 @@ public class Parque implements IParque{
 
 		System.out.println(movimiento + " por puerta " + puerta);
 
-		System.out.println("--> Personas en el parque " + contadorPersonasTotales + "tiempo medio de estancia: " + obtenerMediaTiempo()); //+ " tiempo medio de estancia: "  + tmedio);
+		System.out.println("--> Personas en el parque: " + contadorPersonasTotales + " tiempo medio de estancia: " + obtenerMediaTiempo());
 		
 		// Iteramos por todas las puertas e imprimimos sus entradas
 
@@ -238,7 +238,11 @@ public class Parque implements IParque{
 
 		long tiempoActual = System.currentTimeMillis();
 
-		return (tiempoActual - tiempoInicial) / (contadorPersonasTotales *1.0);
+		if(contadorPersonasTotales == 0) return 0.0;
+		
+		// Convierto los milisegundos a minutos para mejorar la legibilidad.
+
+		return ((tiempoActual - tiempoInicial) / 1000.0) / 60.0 / contadorPersonasTotales;
 
 	  }
 
