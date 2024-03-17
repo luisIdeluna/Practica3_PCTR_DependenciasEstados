@@ -132,22 +132,6 @@ public class Parque implements IParque{
 		
 	}//checkinVariante
 
-	private int sumarPersonasPuerta(){
-
-		int personasPuerta = 0;
-		
-		Enumeration<Integer> nPuertas = contadoresPersonasPuerta.elements();
-
-		//Creo el iterador
-		while (nPuertas.hasMoreElements()){
-
-			personasPuerta += nPuertas.nextElement();
-
-		}//fin while
-
-		return personasPuerta; 
-
-	}//fin sumarPersonasPuerta
 
 	/**
 	 * Método compobarAntesDeEntrar
