@@ -28,6 +28,9 @@ public class Parque implements IParque{
 
 	private Hashtable<String, Integer> contadoresPersonasPuerta; //Tabla a la que le paso una puerta y el número de personas
 	
+	private long tiempoInicial = 0;
+
+	private double tiempoMedio = 0.0;
 	/**
 	 * Constructor
 	 */
@@ -65,6 +68,12 @@ public class Parque implements IParque{
 		
 		contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta)+1);
 		
+		//Llevar a cabo el cálculo de tiempos
+
+		long tiempoActual = System.currentTimeMillis();
+
+		tiempoMedio = (tiempoMedio + (tiempoActual - tiempoInicial))/2.0;
+
 		// Imprimimos el estado del parque
 		
 		imprimirInfo(puerta, "Entrada");
@@ -85,7 +94,7 @@ public class Parque implements IParque{
 
 		System.out.println(movimiento + " por puerta " + puerta);
 
-		System.out.println("--> Personas en el parque " + contadorPersonasTotales); //+ " tiempo medio de estancia: "  + tmedio);
+		System.out.println("--> Personas en el parque " + contadorPersonasTotales + "tiempo medio de estancia: " + obtenerMediaTiempo()); //+ " tiempo medio de estancia: "  + tmedio);
 		
 		// Iteramos por todas las puertas e imprimimos sus entradas
 
@@ -151,10 +160,8 @@ public class Parque implements IParque{
 			}//fin try
 
 			catch( InterruptedException e){
-
-				//e.printStackTrace();
 				
-				Thread.currentThread().interrupt();
+				Thread.currentThread().interrupt(); //Interrupción
                 
 				return;
 
@@ -167,6 +174,7 @@ public class Parque implements IParque{
 	//Comporbamos si existe gente dentro del parque antes de salir
 	protected void comprobarAntesDeSalir(String puerta){
 		
+		//Compruebo que las personas o las personas por puerta son menores o iguales a cero
 		while (contadorPersonasTotales <=0 || contadoresPersonasPuerta.getOrDefault(puerta, 0) <= 0) {
 
 			try{
@@ -177,9 +185,7 @@ public class Parque implements IParque{
 
 			catch( InterruptedException e){
 
-				//e.printStackTrace();
-
-				Thread.currentThread().interrupt();
+				Thread.currentThread().interrupt(); //Interrupción
 
                 return;
 
@@ -211,10 +217,29 @@ public class Parque implements IParque{
 	
 		contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta)-1);
 
+		//Llevar a cabo el cálculo de tiempos
+
+		long tiempoActual = System.currentTimeMillis();
+
+		tiempoMedio = (tiempoMedio + (tiempoActual - tiempoInicial))/2.0;
+
 		imprimirInfo(puerta, "Salida"); //Imprimo la salida  
 
 		checkInvariante(); // hay que verificar que se cumple el invariante
 
-	}
+		notifyAll(); // Notifico a los hilos que esperan para salir
+
+	} //fin salirDelParque
+
+	 /**
+	  * 
+	  */
+	  private synchronized double obtenerMediaTiempo(){
+
+		long tiempoActual = System.currentTimeMillis();
+
+		return (tiempoActual - tiempoInicial) / (contadorPersonasTotales *1.0);
+
+	  }
 
 }//fin clase
